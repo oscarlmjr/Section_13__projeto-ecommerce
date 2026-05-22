@@ -24,12 +24,10 @@ urlpatterns = [
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # TODO: Remover debug toolbar
+
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns = [
-        path('__debug__/', include(debug_toolbar.urls)),
-
-        # For django versions before 2.0:
-        # url(f'^__debug__/', include(debug_toolbar.urls)),
-
+        path('__debug__/', include(debug_toolbar.urls))
+        
     ] + urlpatterns
