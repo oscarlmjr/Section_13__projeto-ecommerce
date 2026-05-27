@@ -158,6 +158,35 @@ class Carrinho(View):
 		 }
 		 return render(self.request, 'produto/carrinho.html', contexto)
 
+class ResumoDaCompra(View):
+	 def get(self, *args, **kwargs):
+#		 if not self.request.user.is_authenticated:
+#			 return redirect('perfil:criar')
+			 return HttpResponse('Finalizar')
+
+#		 perfil = Perfil.objects.filter(usuario=self.request.user).exists()
+
+#		 if not perfil:
+#			 messages.error(
+#				 self.request,
+#				 'Usuário sem perfil.'
+#			 )
+#			 return redirect('perfil:criar')
+
+#		 if not self.request.session.get('carrinho'):
+#			 messages.error(
+#				 self.request,
+#				 'Carrinho vazio.'
+#			 )
+#			 return redirect('produto:lista')
+
+#		 contexto = {
+#			 'usuario': self.request.user,
+#			 'carrinho': self.request.session['carrinho'],
+#		 }
+
+#		 return render(self.request, 'produto/resumodacompra.html', contexto)
+
 class Finalizar(View):
 	def get(self, *args, **kwargs):
 		return HttpResponse('Finalizar')
@@ -224,31 +253,3 @@ class Finalizar(View):
 
 # class Finalizar(View):
 # 	pass
-
-# class ResumoDaCompra(View):
-#	 def get(self, *args, **kwargs):
-#		 if not self.request.user.is_authenticated:
-#			 return redirect('perfil:criar')
-
-#		 perfil = Perfil.objects.filter(usuario=self.request.user).exists()
-
-#		 if not perfil:
-#			 messages.error(
-#				 self.request,
-#				 'Usuário sem perfil.'
-#			 )
-#			 return redirect('perfil:criar')
-
-#		 if not self.request.session.get('carrinho'):
-#			 messages.error(
-#				 self.request,
-#				 'Carrinho vazio.'
-#			 )
-#			 return redirect('produto:lista')
-
-#		 contexto = {
-#			 'usuario': self.request.user,
-#			 'carrinho': self.request.session['carrinho'],
-#		 }
-
-#		 return render(self.request, 'produto/resumodacompra.html', contexto)
