@@ -7,9 +7,7 @@ from django.contrib import messages
 # from django.db.models import Q
 
 from . import models
-# from perfil.models import Perfil
-from pprint import pprint
-
+from perfil.models import Perfil
 
 class ListaProdutos(ListView):
 	model = models.Produto
@@ -27,11 +25,6 @@ class DetalheProduto(DetailView):
 
 class AdicionarAoCarrinho(View):
 	def get(self, *args, **kwargs):
-		#TODO: Remover linhas  abaixo
-		# if self.request.session.get('carrinho'):
-		# 	del self.request.session['carrinho']
-		# 	self.request.session.save()
-
 		http_referer = self.request.META.get(
 			'HTTP_REFERER',
 			reverse('produto:lista')
@@ -88,7 +81,6 @@ class AdicionarAoCarrinho(View):
 					f'no seu carrinho.'
 				)
 				quantidade_carrinho = variacao_estoque
-			print('QUANTIDADE:', quantidade_carrinho)
 
 			carrinho[variacao_id]['quantidade'] = quantidade_carrinho
 			carrinho[variacao_id]['preco_quantitativo'] = preco_unitario * \
@@ -159,33 +151,33 @@ class Carrinho(View):
 		 return render(self.request, 'produto/carrinho.html', contexto)
 
 class ResumoDaCompra(View):
-	 def get(self, *args, **kwargs):
-#		 if not self.request.user.is_authenticated:
-#			 return redirect('perfil:criar')
-			 return HttpResponse('Finalizar')
+	 def get(self, *args, **kwargs):		 
+		 if not self.request.user.is_authenticated:
+			 return redirect('perfil:criar')
 
-#		 perfil = Perfil.objects.filter(usuario=self.request.user).exists()
+		 perfil = Perfil.objects.filter(usuario=self.request.user).exists()
 
-#		 if not perfil:
-#			 messages.error(
-#				 self.request,
-#				 'Usuário sem perfil.'
-#			 )
-#			 return redirect('perfil:criar')
+		 if not perfil:
+			 messages.error(
+				 self.request,
+				 'Usuário sem perfil.'
+			 )
+			 return redirect('perfil:criar')
 
-#		 if not self.request.session.get('carrinho'):
-#			 messages.error(
-#				 self.request,
-#				 'Carrinho vazio.'
-#			 )
-#			 return redirect('produto:lista')
+		 if not self.request.session.get('carrinho'):
+			 messages.error(
+				 self.request,
+				 'Carrinho vazio.'
+			 )
+			 return redirect('produto:lista')
 
-#		 contexto = {
-#			 'usuario': self.request.user,
-#			 'carrinho': self.request.session['carrinho'],
-#		 }
+		 contexto = {
+			 'usuario': self.request.user,
+			 'carrinho': self.request.session['carrinho'],
+		 }
 
-#		 return render(self.request, 'produto/resumodacompra.html', contexto)
+		 return render(self.request, 'produto/resumodacompra.html', contexto)
+
 
 class Finalizar(View):
 	def get(self, *args, **kwargs):
