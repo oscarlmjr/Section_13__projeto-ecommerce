@@ -4,7 +4,7 @@ from django.views.generic.detail import DetailView
 from django.views import View
 from django.http import HttpResponse
 from django.contrib import messages
-# from django.db.models import Q
+from django.db.models import Q
 
 from . import models
 from perfil.models import Perfil
@@ -15,6 +15,26 @@ class ListaProdutos(ListView):
 	context_object_name = 'produtos'
 	paginate_by = 10
 	ordering = ['-id']
+
+
+class Busca(ListaProdutos):
+	 def get_queryset(self, *args, **kwargs):
+		 termo = self.request.GET.get('termo') or self.request.session['termo']
+		 qs = super().get_queryset(*args, **kwargs)
+
+		 if not termo:
+			 return qs
+
+		 self.request.session['termo'] = termo
+
+		 qs = qs.filter(
+			 Q(nome__icontains=termo) |
+			 Q(descricao_curta__icontains=termo) |
+			 Q(descricao_longa__icontains=termo)
+		 )
+
+		 self.request.session.save()
+		 return qs
 
 
 class DetalheProduto(DetailView):
@@ -144,12 +164,14 @@ class RemoverDoCarrinho(View):
 
 		return HttpResponse('Remover do carrinho')
 
+
 class Carrinho(View):
 	def get(self, *args, **kwargs):
 		 contexto = {
 			 'carrinho': self.request.session.get('carrinho', {})
 		 }
 		 return render(self.request, 'produto/carrinho.html', contexto)
+
 
 class ResumoDaCompra(View):
 	 def get(self, *args, **kwargs):		 
@@ -183,66 +205,3 @@ class ResumoDaCompra(View):
 class Finalizar(View):
 	def get(self, *args, **kwargs):
 		return HttpResponse('Finalizar')
-
-#	 ordering = ['-id']
-
-
-# class Busca(ListaProdutos):
-#	 def get_queryset(self, *args, **kwargs):
-#		 termo = self.request.GET.get('termo') or self.request.session['termo']
-#		 qs = super().get_queryset(*args, **kwargs)
-
-#		 if not termo:
-#			 return qs
-
-#		 self.request.session['termo'] = termo
-
-#		 qs = qs.filter(
-#			 Q(nome__icontains=termo) |
-#			 Q(descricao_curta__icontains=termo) |
-#			 Q(descricao_longa__icontains=termo)
-#		 )
-
-#		 self.request.session.save()
-#		 return qs
-
-
-# class RemoverDoCarrinho(View):
-# 	pass
-#	 def get(self, *args, **kwargs):
-#		 http_referer = self.request.META.get(
-#			 'HTTP_REFERER',
-#			 reverse('produto:lista')
-#		 )
-#		 variacao_id = self.request.GET.get('vid')
-
-#		 if not variacao_id:
-#			 return redirect(http_referer)
-
-#		 if not self.request.session.get('carrinho'):
-#			 return redirect(http_referer)
-
-#		 if variacao_id not in self.request.session['carrinho']:
-#			 return redirect(http_referer)
-
-#		 carrinho = self.request.session['carrinho'][variacao_id]
-
-#		 messages.success(
-#			 self.request,
-#			 f'Produto {carrinho["produto_nome"]} {carrinho["variacao_nome"]} '
-#			 f'removido do seu carrinho.'
-#		 )
-
-#		 del self.request.session['carrinho'][variacao_id]
-#		 self.request.session.save()
-#		 return redirect(http_referer)
-
-
-# class Carrinho(View):
-# 	pass
-#	 def get(self, *args, **kwargs):
-
-
-
-# class Finalizar(View):
-# 	pass
