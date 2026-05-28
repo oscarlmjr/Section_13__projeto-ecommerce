@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% comment %} {% block titulo %}Criar perfil | {% endblock %} {% endcomment %}
+{% block titulo %}Criar perfil | {% endblock %}
 
 {% block conteudo %}
 
@@ -60,32 +60,3 @@
 </div>
 
 {% endblock %}
-
-{% comment %}
-<div class="row">
-
-
-
-
-    </div>
-
-    <div class="col-lg mt-3">
-
-
-        <form method="POST" action="">
-            {% csrf_token %}
-            {{ userform|crispy }}
-            {{ perfilform|crispy }}
-
-            <div class="row">
-                <div class="col">
-                    <button type="submit" class='btn btn-primary btn-block btn-lg'>
-                        Enviar
-                    </button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-{% endcomment %}
-

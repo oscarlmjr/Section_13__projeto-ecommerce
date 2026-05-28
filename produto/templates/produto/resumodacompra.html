@@ -1,10 +1,9 @@
 {% extends 'base.html' %}
 {% load omfilters %}
 
-{% comment %} {% block titulo %}Resumo da compra | {% endblock %} {% endcomment %}
+{% block titulo %}Resumo da compra | {% endblock %}
 
 {% block conteudo %}
-
 
 <div class="row mb-5">
     <div class="col-lg">
@@ -80,32 +79,3 @@
 
 
 {% endblock %}
-
-{% comment %} <div class="row mb-5">
-
-
-
-
-
-        </dl>
-
-
-
-        </dl>
-    </div>
-</div>
-
-
-
-
-
-<div class="row">
-    <div class="col">
-        <a class="btn btn-block btn-primary btn-lg" href="{% url 'pedido:salvarpedido' %}">
-            Realizar pedido e pagar
-        </a>
-    </div>
-</div>
-
-
-{% endblock %} {% endcomment %}
